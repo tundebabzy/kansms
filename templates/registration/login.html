@@ -1,0 +1,35 @@
+<html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+    <head>
+        <!-- Set the viewport width to device width for mobile -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Babatunde Akinyanmi" />
+        <title>O'Sheap - Cheap SMS | Login</title>
+        <link rel="stylesheet" href="{{ STATIC_URL }}foundation.min.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}tweaks.css">
+    </head>
+    
+    <body>
+        <div class="row">
+            <div class="six columns centered">
+                {% if form.errors %}
+                <p>Your username and password didn’t match. Please try again.</p>
+                {% endif %}
+                <form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+
+                    <input class="button" type="submit" value="Login" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </form>
+            </div> <!-- nine columns centered -->
+        </div> <!-- row -->
+    </body>
+    
+</html>

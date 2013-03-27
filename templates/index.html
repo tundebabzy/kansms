@@ -1,0 +1,103 @@
+{% load url from future %}
+<html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+    <head>
+        <!-- Set the viewport width to device width for mobile -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Babatunde Akinyanmi" />
+        {% block title %}
+        <title>O'Sheap - Cheap SMS</title>
+        {% endblock %}
+        {% block css_js %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}foundation.min.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}tweaks.css">
+        <script src="{{ STATIC_URL }}foundation.min.js"></script>
+        {% endblock %}
+    </head>
+    <body>
+    <!-- Header and Nav -->
+        <div class="row">
+            <div class="twelve columns">
+                <nav class="top-bar">
+                    <ul>
+                        <li class="name"><h1><a href="{% url 'home' %}">O'Sheap SMS</a></h1></li> <!-- li.name -->
+                        <li class="toggle-topbar"><a href="#"></a></li> <!-- toggle-topbar -->
+                    </ul>
+                    <section>
+                        <ul class="left">
+                            <li class="divider"></li>
+                            <li><a href="#">Credits Available: {{ credits }}</a></li>
+                            <li class="divider hide-for-small"></li>
+                        </ul>
+                        <ul class="right">
+                            <li class="divider show-for-medium-and-up"></li>
+                            <li><a href="#">Buy units</a></li>
+                            <li class="divider show-for-medium-and-up"></li>
+                            <li><a href="{% url 'help' %}">Help</a></li>
+                            <li class="divider show-for-medium-and-up"></li>
+                            <li class="has-dropdown">
+                                <a href="#">{{ user }}</a>
+                                <ul class="dropdown">
+                                    <li><a href="#" class="">Account settings</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'logout-then-login' %}">Logout</a></li>
+                                </ul> <!-- dropdown -->
+                            </li> <!-- has-dropdown -->
+                        </ul>
+                    </section>
+                </nav> <!-- nav top-bar -->
+            </div> <!-- twelve columns -->
+        </div> <!-- row -->
+    <!-- End Header and Nav -->
+
+        <div class="row">
+        <!-- Main Content Section -->
+        <!-- This has been source ordered to come first in the markup (and on small devices) but to be to the right of the nav on larger screens -->
+        
+            <div class="ten columns push-two">
+            {% block main-content %}
+            {% endblock %}
+            </div> <!-- nine columns push-three -->
+
+        <!-- Nav Sidebar -->
+        <!-- This is source ordered to be pulled to the left on larger screens -->
+            <div class="two columns pull-ten">
+            {% block nav-bar-vertical %}
+                <a href="{% url 'all_sent' %}"><img src="{{ STATIC_URL }}icons/119.png" alt="View sent messages" /></a>
+                <h5><a href="{% url 'all_sent' %}">Sent Messages</a></h5>
+            {% endblock %}
+            </div> <!-- three columns pull-nine -->
+        </div> <!-- row -->
+
+        <!-- Footer -->
+        <footer class="row">
+            <div class="twelve columns">
+                <hr />
+                <div class="row">
+                    <div class="six columns">
+                        <p>&copy; Copyright O'Sheap SMS 2013</p>
+                    </div> <!-- six columns -->
+                    <div class="six columns">
+                        <ul class="link-list right">
+                            <li><a href="#">Section 1</a></li>
+                            <li><a href="#">Section 2</a></li>
+                            <li><a href="#">Section 3</a></li>
+                            <li><a href="#">Section 4</a></li>
+                        </ul>
+                    </div> <!-- six columns -->
+                </div> <!-- row -->
+            </div> <!-- twelve columns -->
+        </footer> <!-- footer row -->
+        <script>
+    $(document).ready(function() {
+      $(document).foundationCustomForms();
+      $(document).foundationNavigation();
+      $(document).foundationTopBar();
+    });
+  </script>
+    </body>
+</html>

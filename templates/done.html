@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% load url from future %}
+                {% block main-content %}
+                {% if failed %}
+                <div class="seven columns centered">
+                    <p><strong>There was an error in sending this message:</strong></p>
+                </div>
+                {% endif %}
+                
+                <div class="eight columns centered ">
+                    <blockquote>
+                        <h4>{{ message }}</h4>
+                    </blockquote>
+                    <ul class="inline-list">
+                    {% if failed %}
+                        <li><a href="{% url 'send' %}">Resend the message</a></li>
+                    {% else %}
+                        <li><a href="{% url 'receipients' draft.pk %}">View successfully sent numbers</a></li>
+                        <li><a href="{{ draft.get_absolute_url }}">Send to more people</a></li>
+                    {% endif %}
+                    </ul> <!-- ul.inline-list -->                    
+                </div>
+                <aside>
+                    Please note that successfull sending of an SMS does not guarantee that
+                    the message will be delivered. See <a href="{% url 'help' %}">common platform questions</a>
+                    for more details.
+                </aside>
+
+                {% endblock %}

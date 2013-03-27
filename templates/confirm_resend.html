@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+{% load url from future %}
+            {% block main-content %}
+                {% if phone_numbers %}
+                <p>You are about to resend the message to the following
+                numbers:</p>
+                <ul class="inline-list">
+                {% for number in phone_numbers %}
+                    <li>{{ number }}</li>
+                {% endfor %}
+                </ul>
+
+                <form method="post" action=""> {% csrf_token %}
+                    <div>
+                    {% for number in phone_numbers %}
+                        <input type="hidden" value="{{ number.id }}" name="selected">
+                    {% endfor %}
+                        <input type="hidden" value="{{ msg_id }}" name="message">
+                        <input type="hidden" value="send_selected" name="action">
+                        <input type="hidden" value="yes" name="post">
+                        <input type="hidden" value="{{ next }}" name="next">
+                        <input class="button" type="submit" value="Go Ahead">
+                    </div>
+                </form>
+                
+                {% else %}
+                <p>I can't seem to find the phone numbers you sent
+                this message to. I've been searching and I just have to
+                give up.</p>
+                <p>Please forgive me :)</p>
+                <p> You can <a href="{% url 'send_to_others' msg_id %}">forward</a>
+                the message though and I promise this will be the last time.</p>
+                {% endif %}
+
+            {% endblock %}
+            
+            {% block nav-bar-vertical %}
+                <a href="{% url 'home' %}"><img src="{{ STATIC_URL }}icons/8.png" alt="View sent messages" /></a>
+                <h5><a href="{% url 'home' %}">New Message</a></h5>
+                <a href="{% url 'all_sent' %}"><img src="{{ STATIC_URL }}icons/119.png" alt="View sent messages" /></a>
+                <h5><a href="{% url 'all_sent' %}">Sent Messages</a></h5>
+            {% endblock %}

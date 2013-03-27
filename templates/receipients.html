@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% load url from future %}
+            {% block main-content %}
+                <div class="twelve columns">
+                    <blockquote>
+                        <h4><strong>{{ message }}</strong> </h4>
+                        <a href="{% url 'all_sent' %}">View your messages</a>
+                    </blockquote>
+                </div>
+
+                <div class="twelve columns">
+                    <h5>Receipients</h5>
+                    <ul class="inline-list">
+                        {% for number in phone_numbers %}
+                        <li>{{ number }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endblock %}

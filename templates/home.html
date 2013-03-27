@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+{% load url from future %}
+            {% block main-content %}
+            <h3 class="subheader">Send an SMS using your phone book.<small>(coming soon)</small></h3>
+            <hr />
+            <h3 class="subheader"><a href="{% url 'send' %}">Send an SMS and enter receipients manually.</a></h3>
+            <hr />
+            <h3 class="subheader"><a href="{% url 'all_sent' %}">View your sent messages.</a></h3>
+            {% endblock %}
+
+            {% block nav-bar-vertical %}{% endblock %}
