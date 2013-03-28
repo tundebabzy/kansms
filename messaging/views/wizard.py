@@ -63,9 +63,10 @@ class SendSmsWizard(SessionWizardView):
         form_one_data, form_two_data = [form.cleaned_data for form in form_list]
         
         text = form_one_data['message']
+        sender_name = form_one_data['sender']
         to = form_two_data.get('single_receipient',None) or form_two_data.get('bulk_receipient', None)
 
-        sms_pack = SmsBlaster(text=text,numbers=to, user=self.request.user)
+        sms_pack = SmsBlaster(text=text,numbers=to, user=self.request.user, sent_by=sender_name)
         sms_pack_data = sms_pack.blast()
                                 
         return render_to_response('done.html', {
