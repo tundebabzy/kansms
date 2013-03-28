@@ -22,18 +22,12 @@ def get_connection(path=None, fail_silently=False, **kwargs):
 
     return klass(fail_silently=fail_silently, **kwargs)
 
-def _connection(fail_silently=None, username=None, password=None,
-                connection=None):
-    connection = connection or get_connection(
-        fail_silently = fail_silently,
-        username = username,
-        password = password,
-    )
+def _connection(fail_silently=None, connection=None):
+    connection = connection or get_connection(fail_silently = fail_silently)
     return connection
     
 
-def send_sms(text, to, fail_silently=False,
-             username=None, password=None, connection=None):
+def send_sms(text, to, fail_silently=False,user=None, connection=None):
     """
     This uses the backend to send a single SMS.
     
@@ -49,8 +43,8 @@ def send_sms(text, to, fail_silently=False,
         message = Message(text=text, to=to)
         return connection.send_messages(message)
 
-def send_bulk_sms(text, number_list, fail_silently=False,
-             username=None, password=None, connection=None):
+def send_bulk_sms(text, number_list, fail_silently=False, user=None,
+                    connection=None, sent_by=None):
     """
     This uses the backend to send multiple messages.
     
@@ -60,12 +54,22 @@ def send_bulk_sms(text, number_list, fail_silently=False,
     This should be used for bulk messages. For just a single message,
     use `send_sms`.
     """
+
+    # before proceeding, lets make sure the user instance is authenticated
+    if not user or not user.is_authenticated():
+        raise
+        
     from backends.messaging import Message
-    connection = _connection(fail_silently, username, password, connection)
+    connection = _connection(fail_silently, connection)
     
     # Check datatuple for messages supplied with acceptable destination
     # numbers are queue *only* those for sending
     messages = []
     for m in number_list:
         messages.append(Message(text=text, to=m))
-    return connection.send_messages(messages)
+
+    # If for any reason theres an empty sender argument then bail
+    if not sent_by:
+        raise
+        
+    return connection.send_messages(messages, unicode(sent_by))
