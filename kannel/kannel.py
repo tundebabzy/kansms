@@ -107,7 +107,7 @@ class RoutesmsSmsSender(SmsSender):
         return res
             
 class InfobipSmsSender(SmsSender):
-    def send(self, message_instance_list, sent_by, buffer=False):
+    def send(self, message_instance_list, sent_by):
         """
         Builds infobip xml tree and POSTs to the api. It returns a list
         of tuples:
