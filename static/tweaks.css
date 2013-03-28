@@ -1,0 +1,10 @@
+textarea { min-height: 170px; }
+ul.inline-list, ul.link-list { margin: 0 0 17px -22px; padding: 0; list-style: none; overflow: hidden; }
+ul.inline-list > li, ul.link-list > li { list-style: none; float: left; margin-left: 22px; display: block; }
+ul.inline-list > li > *, ul.link-list > li > * { display: block; }
+
+.subheader { line-height: 1.3; color: #6f6f6f; font-weight: 300; margin-bottom: 17px; }
+.bold { font-weight:bold; }
+
+form.custom fieldset div.custom { float: left; }
+@media only screen and (max-width: 767px) { .left { float: none; } }

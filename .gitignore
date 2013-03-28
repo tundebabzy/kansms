@@ -4,5 +4,5 @@
 *.conf
 db
 supervisor/
-static/
 media/
+kansms/settings.py
