@@ -8,12 +8,13 @@ class SmsBlaster(object):
     and returns a list of tuples where each tuple contains a status code
     and the destination number for which the code relates.
     """
-    def __init__(self, text, numbers=None, user=None, sms_class=Sms):
+    def __init__(self, text, numbers=None, user=None, sms_class=Sms, sent_by=None):
         self.text = text
         self.numbers = numbers
         self.user = user
         self.sms_class = sms_class
         self.sms_instance = None
+        self.sent_by = sent_by
         self.contact_list = []
         self.successful = []
         self.failed = []
@@ -27,7 +28,7 @@ class SmsBlaster(object):
             to = [self.numbers]
         else:
             to = self.numbers
-        response = send_bulk_sms(self.text, number_list=to) # [(0,2348058068419)]
+        response = send_bulk_sms(self.text, number_list=to, user=self.user, sent_by=self.sent_by) # [(0,2348058068419)]
         self.analyse(response)
 
     def analyse(self,response):
