@@ -5,7 +5,7 @@ O'sheap backend.
 from base import BaseBackend
 from messaging import Message
 from django.conf import settings
-from kannel.kannel import RoutesmsSmsSender as SmsSender
+from kannel.kannel import InfobipSmsSender as SmsSender
 
 USERNAME = getattr(settings, 'SMS_GATEWAY_USERNAME', '')
 #USERNAME = 'citrusSMS'
@@ -20,7 +20,7 @@ SERVER = getattr(settings, 'SMS_GATEWAY_API_URL', '')
 
 class SmsBackend(BaseBackend):
     sms_sender = SmsSender(username=USERNAME, password=PASSWORD, server=SERVER, port=PORT)
-    def send_messages(self, messages, sender='OsheapSMS'):
+    def send_messages(self, messages, sender=None):
         if not messages:
             return 0
         valid_messages = check_args(messages)
