@@ -11,7 +11,7 @@ DELIVERY_METHOD = (
                 )
                 
 class MessageForm(forms.Form):
-    sender = forms.CharField(required=False, max_length=14)
+    sender = forms.CharField(max_length=14)
     message = forms.CharField(widget=forms.Textarea, required=False)
     method = forms.ChoiceField(choices=DELIVERY_METHOD, label="Method for Supplying Receipients' Number(s)")
     save_message = forms.BooleanField(required=False)
