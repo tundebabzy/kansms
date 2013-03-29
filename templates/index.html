@@ -13,10 +13,11 @@
         <title>O'Sheap - Cheap SMS</title>
         {% endblock %}
         {% block css_js %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}normalize.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}foundation.min.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}tweaks.css">
-        <script src="{{ STATIC_URL }}foundation.min.js"></script>
         {% endblock %}
+        <script src="{{ STATIC_URL }}modernizr.foundation.js"></script>
     </head>
     <body>
     <!-- Header and Nav -->
@@ -92,12 +93,13 @@
                 </div> <!-- row -->
             </div> <!-- twelve columns -->
         </footer> <!-- footer row -->
-        <script>
+    <script src="{{ STATIC_URL }}foundation.min.js"></script>
+    <script>
     $(document).ready(function() {
       $(document).foundationCustomForms();
       $(document).foundationNavigation();
       $(document).foundationTopBar();
     });
-  </script>
+    </script>
     </body>
 </html>
