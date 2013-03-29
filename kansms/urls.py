@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.contrib.auth.views import logout_then_login, login
+from django.contrib.auth.views import logout_then_login, login, password_reset, password_reset_done, password_reset_confirm
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from messaging.views import (SendSmsWizard, skip_if_single_receipient,
@@ -38,6 +38,12 @@ urlpatterns = patterns('',
     url(r'^dash/receipients/(?P<msg_id>\d+)/$', NumberListView.as_view(),
                                 name='receipients'
         ),
+    url(r'^accounts/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+            password_reset_confirm, name='password_reset_confirm'),
+    url(r'^accounts/reset/$', password_reset,
+            {'post_reset_redirect': '/accounts/reset-done/'}, name='password_reset',
+        ),
+    url(r'^accounts/reset-done/$', password_reset_done, name='password_reset_done'),
     url(r'^accounts/login/$', login
         ),
     url(r'^accounts/logout/$', logout_then_login,
