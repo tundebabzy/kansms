@@ -17,7 +17,14 @@
         <link rel="stylesheet" href="{{ STATIC_URL }}foundation.min.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}tweaks.css">
         {% endblock %}
+        
         <script src="{{ STATIC_URL }}modernizr.foundation.js"></script>
+        
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
     </head>
     <body>
     <!-- Header and Nav -->
