@@ -28,6 +28,9 @@ class SmsBlaster(object):
             to = [self.numbers]
         else:
             to = self.numbers
+        t=self.text
+        u=self.user
+        s=self.sent_by
         response = send_bulk_sms(self.text, number_list=to, user=self.user, sent_by=self.sent_by) # [(0,2348058068419)]
         self.analyse(response)
 
@@ -56,7 +59,10 @@ class SmsBlaster(object):
 
     def create_or_get_sms_instance(self):
         if not self.sms_instance:
-            self.sms_instance = self.sms_class.objects.create(sender=self.user, body=self.text)
+            s=self.user
+            b=self.text
+            s=self.sent_by
+            self.sms_instance = self.sms_class.objects.create(sender=self.user, body=self.text, sender_alias=self.sent_by)
         return self.sms_instance
 
     def create_contacts_and_list(self):
