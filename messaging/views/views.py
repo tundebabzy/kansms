@@ -97,7 +97,7 @@ class VerifyView(OrdinaryView):
                     'num_successful':sms_pack_data['successful'],
                     'num_failed': sms_pack_data['failed']
             }
-            return HttpResponseRedirect(reverse('all_sent'))    # In the template we can make this open in a new target
+            return HttpResponseRedirect(reverse('all_sent'))
             
     def clean_selected(self, value):
         if not isinstance(value, list):
