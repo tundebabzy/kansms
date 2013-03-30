@@ -13,7 +13,7 @@
                 <form method="post" action=""> {% csrf_token %}
                     <div>
                     {% for number in phone_numbers %}
-                        <input type="hidden" value="{{ number.id }}" name="selected">
+                        <input type="hidden" value="{{ number }}" name="selected">
                     {% endfor %}
                         <input type="hidden" value="{{ msg_id }}" name="message">
                         <input type="hidden" value="send_selected" name="action">
