@@ -41,7 +41,7 @@ class NumberListView(OrdinaryView):
         msg_id = self.kwargs.get('msg_id', None)
         context = super(NumberListView, self).get_context_data(**kwargs)
         message = Sms.objects.get(pk=msg_id)
-        phone_numbers = List.objects.filter(message__id=msg_id).values_list('number', flat=True)
+        phone_numbers = List.objects.filter(message__id=msg_id, message__sender=self.request.user).values_list('number', flat=True)
         context.update({'message':message,'phone_numbers':phone_numbers})
 
         return context
@@ -53,7 +53,7 @@ class VerifyView(OrdinaryView):
         msg_id = self.kwargs.get('msg_id', None)
         context = super(VerifyView, self).get_context_data(**kwargs)
         # Also make sure that the messages belong to the logged in user
-        phone_numbers = Contact.objects.select_related(depth=1).filter(message__id=msg_id).filter(message__sender=self.request.user)
+        phone_numbers = List.objects.filter(message__id=msg_id, message__sender=self.request.user).values_list('number', flat=True)
         context.update({'phone_numbers':phone_numbers, 'msg_id':msg_id})
         return context 
 
@@ -84,14 +84,13 @@ class VerifyView(OrdinaryView):
             return self.get(request, *args, **kwargs)
 
         if msg_id and selected and to_post and send_selected:
-            numbers = Contact.objects.filter(pk__in=selected).values_list('number', flat=True)
-            if numbers.count() != len(selected):
+            numbers = selected
+            if len(numbers) != len(selected):
                 return self.get(request, *args, **kwargs)
-            message = Sms.objects.filter(pk=msg_id).values_list('body', flat=True)
+            message = Sms.objects.filter(pk=msg_id).values_list('body', 'sender_alias')
             if not message:
                 return self.get(request, *args, **kwargs)
-                
-            sms_pack = SmsBlaster(text=message[0], numbers=numbers, user=self.request.user)
+            sms_pack = SmsBlaster(text=message[0][0], numbers=selected, user=self.request.user, sent_by=message[0][1])
             sms_pack_data = sms_pack.blast()
 
             data = {'num_sent': sms_pack_data['successful'] + sms_pack_data['failed'],
@@ -104,7 +103,7 @@ class VerifyView(OrdinaryView):
         if not isinstance(value, list):
             # arguement should be a list
             return []
-        acceptable = re.compile('^[0-9]+$')
+        acceptable = re.compile('^234[0-9]{10}$')
         verified = []
         
         for el in value:
