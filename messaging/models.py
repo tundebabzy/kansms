@@ -13,12 +13,7 @@ def is_positive(value):
     
 class List(models.Model):
     message = models.ForeignKey('Sms', related_name='sms_id')
-    #contact = models.ForeignKey('Contact')
     number = models.CharField(max_length=15)
-    #first_name = models.CharField(max_length=30, blank=True, null=True)
-    #last_name = models.CharField(max_length=30, blank=True, null=True)
-    #email = models.EmailField(blank=True, null=True)
-    #saved = models.BooleanField(default=False)
     
     def __unicode__(self):
         return '%s' %self.number
@@ -51,6 +46,7 @@ class ContactGroup(models.Model):
 class Sms(models.Model):
     # model name changed from Draft to Sms
     sender = models.ForeignKey(User, blank=True, null=True)
+    sender_alias = models.CharField(max_length=14, blank=False, null=True)
     body = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now=True)
     trash = models.BooleanField(default=False)
@@ -71,13 +67,6 @@ class UserProfile(models.Model):
     """    
     user = models.OneToOneField(User)
     credit = models.IntegerField(default=0)
-
-#    def save(self, *args, **kwargs):
-#        # Although there will be checks in other places, lets still
-#        # make sure a negative figure never gets saved
-#        if not is_positive(self.credit):
-#            return
-#        return super(UserProfile, self).save(*args, **kwargs)
 
     def get_balance(self):
         """ Return the amount of SMS available to the user """
