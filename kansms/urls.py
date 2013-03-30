@@ -50,14 +50,10 @@ urlpatterns = patterns('',
             {'login_url': '/accounts/login/'}, name='logout-then-login',
         ),
     url(r'^help/$', HelpPageView.as_view(), name='help'),
-    # Examples:
-    # url(r'^$', 'kansms.views.home', name='home'),
-    # url(r'^kansms/', include('kansms.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )
-#urlpatterns += staticfiles_urlpatterns()
