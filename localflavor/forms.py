@@ -15,7 +15,7 @@ from django.utils.encoding import smart_unicode
 
 OPERATOR_PREFIX = ['0802', '0803', '0805', '0806', '0807', '0808',
     '0809', '0810', '0813', '0815', '0816', '0819', '0703', '0705',
-    '0706']
+    '0706', '0814', '0811', '0708']
     
 mobile_number_re = re.compile(
         """
@@ -30,7 +30,7 @@ mobile_number_re = re.compile(
 class NigerianMobileNumberField(CharField):
     default_error_messages = {
         'invalid': 'Check that you supplied a single phone number and that the \
-        phone number is in this format eg: 2348058009999'
+        phone number is in this format eg: 08058009999'
         }
         
     def clean(self, value):
@@ -54,16 +54,16 @@ class NigerianMobileNumberField(CharField):
 class MultipleNaijaMobileNumberField(CharField):        
     default_error_messages = {
         'invalid': 'Phone numbers must be in this format. eg: \
-                    2348058009999. Also make sure that the numbers are \
-                    separated by commas (,) a new line or a space eg 2348058009999, \
-                    2348038009999 2348098009999'
+                    08058009999 and make sure that the numbers are \
+                    separated by commas (,) a new line or a space eg 08058009999, \
+                    08038009999 08098009999'
         }
 
     def clean(self, value):
         super(MultipleNaijaMobileNumberField, self).clean(value)
         if value in EMPTY_VALUES:
             return u''
-        value = re.sub('(\s+)', '', smart_unicode(value))
+        value = re.sub('(\s+)', ' ', smart_unicode(value))
         
         # This is the regexp that should catch the characters we don't
         # want to work with. I don't want to try and correct things too
@@ -97,8 +97,8 @@ class MultipleNaijaMobileNumberField(CharField):
         if errors:
             raise ValidationError(
             'Please check and make sure that the following numbers you \
-            supplied are in the correct format i.e 234XXXYYYZZZZ \
-            e.g 2348050009999.: %s' % ','.join([u' %s' % e for e in errors]))
+            supplied are in the correct format i.e XXXYYYZZZZ \
+            e.g 08050009999.: %s' % ','.join([u' %s' % e for e in errors]))
         if operator_error:
             raise ValidationError(
             'The following number(s) you supplied does not seem to be \
