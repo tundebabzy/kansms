@@ -17,25 +17,25 @@ compose_forms = [MessageForm, SingleReceipientForm, BulkReceipientForm]
 
 urlpatterns = patterns('',
     url(r'^api/', include(sms_resource.urls)),
-    url(r'^dash/$', HomePageView.as_view(), name='home'),
-    url(r'^dash/message/send/$', SendSmsWizard.as_view(compose_forms,
+    url(r'^$', HomePageView.as_view(), name='home'),
+    url(r'^message/send/$', SendSmsWizard.as_view(compose_forms,
                         condition_dict={'1': skip_if_single_receipient,
                                         '2': skip_if_bulk_receipient}),
                     name='send'),
-    url(r'^dash/message/send/(?P<msg_id>\d+)/$', SendSmsWizard.as_view(compose_forms,
+    url(r'^message/send/(?P<msg_id>\d+)/$', SendSmsWizard.as_view(compose_forms,
                         condition_dict={'1': skip_if_single_receipient,
                                         '2': skip_if_bulk_receipient},
                         initial_dict={'0':initial_data_for_wizard,
                                       '1':{'single_receipient':'08058008000'}}),
                         name='send_to_others'),
-    url(r'^dash/sent/$', SavedDraftListView.as_view(),
+    url(r'^sent/$', SavedDraftListView.as_view(),
                             name='all_sent'
         ),
-    url(r'^dash/resend/(?P<msg_id>\d+)/$', VerifyView.as_view(), name='resend'
+    url(r'^resend/(?P<msg_id>\d+)/$', VerifyView.as_view(), name='resend'
         ),
-    url(r'^dash/resend/success/$', ResendSuccessView.as_view(), name='resend_success'
+    url(r'^resend/success/$', ResendSuccessView.as_view(), name='resend_success'
         ),
-    url(r'^dash/receipients/(?P<msg_id>\d+)/$', NumberListView.as_view(),
+    url(r'^receipients/(?P<msg_id>\d+)/$', NumberListView.as_view(),
                                 name='receipients'
         ),
     url(r'^accounts/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
