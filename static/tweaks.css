@@ -8,3 +8,6 @@ ul.inline-list > li > *, ul.link-list > li > * { display: block; }
 
 form.custom fieldset div.custom { float: left; }
 @media only screen and (max-width: 767px) { .left { float: none; } }
+
+ul.side-nav li a {font-family: "Courier New",Courier,monospace;}
+ul.side-nav li {text-transform: uppercase; line-height:30px; font-size:30px;}
