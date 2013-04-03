@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% load url from future %}
             {% block main-content %}
-                    <form action="" class="custom" method="post">{% csrf_token %}
+                    <form action="" class="" method="post">{% csrf_token %}
                         <div class="row">
                             <div class="button-bar">
                                 <ul class="button-group">
@@ -53,8 +53,8 @@
                             <div class="ten columns">
                                 <label for="checkbox{{ forloop.counter }}">
                                     <input name="selected" value="{{ object.pk }}" type="checkbox" id="checkbox{{ forloop.counter }}">
-                                    <span class="checkbox"></span>
-                                    <p><span class="bold">{{ object }}</span></p>
+                                    
+                                    <strong>{{ object }}</strong>
                                 </label>
                                 <ul class="inline-list">
                                     <li><a href="{% url 'send_to_others' object.pk %}">Forward</a></li>
