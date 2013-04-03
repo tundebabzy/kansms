@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% load url from future %}
             {% block main-content %}
-                    <form action="" class="" method="post">{% csrf_token %}
+                    <form action="" class="custom" method="post">{% csrf_token %}
                         <div class="row">
                             <div class="button-bar">
                                 <ul class="button-group">
@@ -53,7 +53,6 @@
                             <div class="ten columns">
                                 <label for="checkbox{{ forloop.counter }}">
                                     <input name="selected" value="{{ object.pk }}" type="checkbox" id="checkbox{{ forloop.counter }}">
-                                    
                                     <strong>{{ object }}</strong>
                                 </label>
                                 <ul class="inline-list">
@@ -112,8 +111,7 @@
             {% endblock %}
 
             {% block nav-bar-vertical %}
-                <!-- <a href="{% url 'home' %}"><img src="{{ STATIC_URL }}icons/8.png" alt="View sent messages" /></a> -->
-                <h5><a href="{% url 'home' %}">New Message</a></h5>
-                <!-- <a href="{% url 'all_sent' %}"><img src="{{ STATIC_URL }}icons/119.png" alt="View sent messages" /></a> -->
-                <h5><a href="{% url 'all_sent' %}">Sent Messages</a></h5>
+                <ul class="side-nav">
+                    <li><a href="{% url 'home' %}">New Message</a></li>
+                </ul>
             {% endblock %}
