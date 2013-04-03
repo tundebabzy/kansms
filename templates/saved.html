@@ -2,14 +2,11 @@
 {% load url from future %}
             {% block main-content %}
                     <form action="" class="custom" method="post">{% csrf_token %}
-                        <div class="row">
-                            <div class="button-bar">
-                                <ul class="button-group">
-                                    <li><input type="submit" class="button" value="Delete" /></li>
-                                </ul>
-                            </div> <!-- button-bar -->
+                        <div class="row hide-for-medium-down">
+                            <input type="submit" class="button" value="Delete Selected Messages" />
                         </div> <!-- row -->
-                    <ul class="pagination">
+
+                    <ul class="pagination show-for-large-up">
                         {% for page in page_obj.paginator.page_range %}
                         {% if forloop.first %}
                             {% if not page_obj.has_previous %}
@@ -34,6 +31,7 @@
                         {% endif %}
                         {% endfor %}
                     </ul> <!-- ul paginator -->
+                    
                         <div class="row hide-for-small">
                             <div class="ten columns">
                                 <label>
@@ -68,13 +66,6 @@
                             <hr/>
                         </div> <!-- row -->
                     {% endfor %}
-                        <div class="row">
-                            <div class="button-bar">
-                                <ul class="button-group">
-                                    <li><input type="submit" class="button" value="Delete" /></li>
-                                </ul>
-                            </div> <!-- button-bar -->
-                        </div> <!-- row -->
 
                     <ul class="pagination">
                         {% for page in page_obj.paginator.page_range %}
@@ -102,6 +93,10 @@
                         {% endfor %}
                     </ul> <!-- ul paginator -->
 
+                        <div class="row">
+                            <input type="submit" class="button" value="Delete Selected Messages" />
+                        </div> <!-- row -->
+                        
                     {% else %}
                         <div class="row">
                             <p>No activity here yet.</p>
@@ -113,5 +108,6 @@
             {% block nav-bar-vertical %}
                 <ul class="side-nav">
                     <li><a href="{% url 'home' %}">New Message</a></li>
+                    <hr />
                 </ul>
             {% endblock %}
