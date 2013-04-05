@@ -8,7 +8,7 @@ from messaging.models import Group, Contact
 DELIVERY_METHOD = (
                     ('SR', 'Single Reciepient'),
                     ('BR', 'Bulk Reciepients'),
-                    ('FU', 'File upload (For numbers contained in a .txt or .csv file)')
+                    ('FU', '.txt or .csv file')
                 )
                 
 class MessageForm(forms.Form):
