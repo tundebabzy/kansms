@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from messaging.forms import MessageFormError
 from messaging.models import Sms
 from messaging.sender import SmsBlaster
+from django.core.files.storage import FileSystemStorage
 
 class SendSmsWizard(SessionWizardView):
     """    
@@ -20,6 +21,7 @@ class SendSmsWizard(SessionWizardView):
 
     """
     template_name = 'dash.html'
+    file_storage = FileSystemStorage
     
 
     @method_decorator(login_required)
@@ -42,7 +44,7 @@ class SendSmsWizard(SessionWizardView):
         returns an empty dictionary and is updated with arguments by the
         get_form method.
         """
-        if step == '3':
+        if step == '4':
             return {'error_class': MessageFormError, 'owner':self.request.user}
         return {'error_class': MessageFormError}
 
@@ -91,6 +93,11 @@ def skip_if_bulk_receipient(wizard):
     cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
     method = cleaned_data.get('method', False)
     return method == 'BR'
+
+def is_file_load(wizard):
+    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+    method = cleaned_data.get('method', False)
+    return method == 'FU'
     
 def initial_data_for_wizard(wizard):
     """
