@@ -8,6 +8,7 @@ from messaging.models import Group, Contact
 DELIVERY_METHOD = (
                     ('SR', 'Single Reciepient'),
                     ('BR', 'Bulk Reciepients'),
+                    ('FU', 'File upload (For numbers contained in a .txt or .csv file)')
                 )
                 
 class MessageForm(forms.Form):
@@ -24,6 +25,10 @@ class BulkReceipientForm(forms.Form):
     bulk_receipient = MultipleNaijaMobileNumberField(widget=forms.Textarea,
         label='Bulk Receipients', help_text='Seperate numbers with a comma (,)\
         or a new line(pressing the Enter key)')
+
+class FileUploadForm(forms.Form):
+    file_name = forms.FileField(label='Upload file containing your numbers. Must be in .CSV or .txt format',
+                                help_text='maximum size = 1MB')
 
 class MessageFormError(ErrorList):
     def __unicode__(self):
