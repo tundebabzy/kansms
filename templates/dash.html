@@ -8,7 +8,7 @@
                     {% else %}
                     {{ form_wizard.form.media }}
                     <p><span class="round label">Step {{ step1 }}</span></p>
-                    <form action="" {% if step1 == 1 %}class="custom"{% endif %} method="post">{% csrf_token %}
+                    <form action="" {% if step1 == 1 %}class="custom" {% elif step1 == 2 %}enctype="multipart/form-data"{% endif %} method="post">{% csrf_token %}
                     {{ management_form }}
                     {% if step1 == 1 %}
                         <fieldset>
@@ -36,6 +36,7 @@
                         {{ field.errors }}
                         {{ field.label_tag }}
                         {{ field }}
+                        <br />
                         {% endfor %}
                     {% if prev %}
                         <button class="button" name="wizard_goto_step" type="submit" value="{{ wizard_steps.first }}">Back and Edit SMS</button>
