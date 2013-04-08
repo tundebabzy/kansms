@@ -119,7 +119,8 @@ class MultipleNaijaMobileNumberField(CharField):
                         operator_error.append(n)
                     else:
                         cleaned_number = _get_cleaned_number(number)
-                        final_numbers.append(cleaned_number)
+                        if cleaned_number not in final_numbers:
+                            final_numbers.append(cleaned_number)
                 else:
                     errors.append(n)
                         
