@@ -13,42 +13,66 @@ from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import smart_unicode
 
-OPERATOR_PREFIX = ['0802', '0803', '0805', '0806', '0807', '0808',
-    '0809', '0810', '0813', '0815', '0816', '0819', '0703', '0705',
-    '0706', '0814', '0811', '0708']
+COUNTRY_PREFIX = ['234']
+
+OPERATOR_PREFIX = ['802', '803', '805', '806', '807', '808',
+    '809', '810', '813', '815', '816', '819', '703', '705',
+    '706', '814', '811', '708']
     
 mobile_number_re = re.compile(
         """
         ^
-        (\d{4})     #   Match the OPERATOR_PREFIX
+        (\d{3})*    #   Match the country code for Nigeria
+        (0)*          #   
+        (\d{3})     #   Match the OPERATOR_PREFIX
         (\d{3})     #   Next 3 digits
         (\d{4})     #   Match last 4 digits
         $
         """
         , re.VERBOSE)
 
+def _get_cleaned_number(n):
+    s = list(n.groups())
+
+    # If '234' is missing, lets add it...
+    s[0] = s[0] or '234'
+
+    # if group 2 is present, remove it anyway...
+    s.pop(1)
+
+    # finally convert the list to string...
+    return ''.join(s)
+
+
 class NigerianMobileNumberField(CharField):
     default_error_messages = {
-        'invalid': 'Check that you supplied a single phone number and that the \
-        phone number is in this format eg: 08058009999'
+        'invalid': 'Check that you supplied only one phone number and that the \
+        format is valid'
         }
         
     def clean(self, value):
         super(NigerianMobileNumberField, self).clean(value)
+        
         if value in EMPTY_VALUES:
             return u''
+            
         value = re.sub('(\s+)', '', smart_unicode(value))
         not_allowed = re.compile(r'\D')
         x = not_allowed.search(value)
         if x:
             raise ValidationError(self.error_messages['invalid'])
+            
         number = mobile_number_re.search(value)
         if number:
-            if number.group(1) in OPERATOR_PREFIX:
-                return u'234%s%s%s' %(number.group(1)[1:], number.group(2), 
-                                            number.group(3))
-            else:
-                raise ValidationError(self.error_messages['invalid'])
+            if number.group(1) in COUNTRY_PREFIX or number.group(1) == None:
+                if number.group(3) in OPERATOR_PREFIX:
+                    cleaned_number = _get_cleaned_number(number)
+                    return cleaned_number
+                else:
+                    raise ValidationError("""The number you supplied does
+            not seem to be a valid Nigerian cell phone numbers. Please
+            check and confirm.""")
+
         raise ValidationError(self.error_messages['invalid'])
         
 class MultipleNaijaMobileNumberField(CharField):        
@@ -70,8 +94,9 @@ class MultipleNaijaMobileNumberField(CharField):
         # much in case the corrections could by some luck cause some
         # incorrect numbers to be pushed to the backend for sending
         # hence once any unexpected character is found, bail.
-        not_allowed = re.compile(r'[^0-9, ]')
+        not_allowed = re.compile(r'\D ')
         x = not_allowed.search(value)
+        
         if x:
             raise ValidationError(self.error_messages['invalid'])
         
@@ -83,17 +108,21 @@ class MultipleNaijaMobileNumberField(CharField):
         # Considering the fact that the user could potentially have
         # supplied hundreds of malformed or unacceptable phone numbers,
         # the user will be happier to see all the offending numbers
-        # at once.
+        # at once.        
         for n in value:
             number = mobile_number_re.search(n)
             if not number:
                 errors.append(n)
-            elif not errors:
-                if number.group(1) not in OPERATOR_PREFIX:
-                    operator_error.append(n)
-                t = u'234%s%s%s' %(number.group(1)[1:], number.group(2),
-                                    number.group(3))
-                final_numbers.append(t)
+            else:
+                if number.group(1) in COUNTRY_PREFIX or number.group(1) == None:
+                    if number.group(3) not in OPERATOR_PREFIX:
+                        operator_error.append(n)
+                    else:
+                        cleaned_number = _get_cleaned_number(number)
+                        final_numbers.append(cleaned_number)
+                else:
+                    errors.append(n)
+                        
         if errors:
             raise ValidationError(
             'Please check and make sure that the following numbers you \
@@ -105,4 +134,3 @@ class MultipleNaijaMobileNumberField(CharField):
             valid Nigerian cell phone numbers. Please check and confirm \
             them : %s' % ','.join([u' %s' %e for e in operator_error]))
         return final_numbers
-        
