@@ -24,22 +24,7 @@ urlpatterns = patterns('',
 
     url(r'^message/', include('messaging.urls')),
 
-    url(r'^accounts/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-            password_reset_confirm, name='password_reset_confirm'),
-
-    url(r'^accounts/reset/$', password_reset,
-            {'post_reset_redirect': '/accounts/reset-done/'}, name='password_reset',),
-
-    url(r'^accounts/reset-done/$', password_reset_done, name='password_reset_done'),
-
-    url(r'^accounts/complete-reset/$', password_reset_complete, name='password_reset_complete'),
-
-    url(r'^accounts/login/$', login, name='login'),
-
-    url(r'^accounts/logout/$', logout_then_login,
-            {'login_url': '/accounts/login/'}, name='logout-then-login'),
-
-    url(r'^help/$', HelpPageView.as_view(), name='help'),
+    url(r'^accounts/', include('userena.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

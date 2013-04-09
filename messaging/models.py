@@ -60,68 +60,14 @@ class Sms(models.Model):
 
     def is_draft(self):
         return to_save
-        
-class UserProfile(models.Model):
-    """
-    Extend django.auth.User to add an extra field: credit
-    """    
-    user = models.OneToOneField(User)
-    credit = models.IntegerField(default=0)
 
-    def get_balance(self):
-        """ Return the amount of SMS available to the user """
-        return self.credit
-
-    def add_credit(self, value):
-        """
-        Add [value] SMS to the user's account. Returns the new value of
-        self.credit.
-         """
-        # If a negative figure ever gets supplied to the method, just
-        # fail.
-        if not is_positive(value):
-            raise InvalidTransaction
-
-        # I'm limiting the maximum number that can be added at once to
-        # `MAXIMUM_VALUE`
-        if not MAXIMUM_VALUE >= value:
-            raise NumberTooBig
-            
-        # coerce `value` to int just in case a float is supplied
-        value = int(value)
-        self.credit = self.credit + value
-        return self.credit 
-
-    def deduct_credit(self, value):
-        """
-        Deduct [value] SMS from the user's account. Returns the new
-        value of self.credit
-        """
-        # Ideally there should not be a situation where there would be
-        # an attempt to deduct more than is available. The frontend
-        # should take care of that but there should be checks here.
-
-        # If a negative value ever gets supplied to the method, fail.
-        if not is_positive(value):
-            raise InvalidTransaction
-
-        # coerce `value` to int just in case a float is supplied
-        value = int(value)
-        if self.credit < value:
-            raise InvalidTransaction
-        else:
-            self.credit = self.credit - value
-        return self.credit
-
-User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u, defaults={'credit':0})[0])
-
-def add_to_group(sender, instance, created, **kwargs):
-    from django.contrib.auth.models import Group
-
-    if created:
-        try:
-            group = Group.objects.get(name='Normal Users')
-            instance.groups.add(group)
-        except:
-            pass 
-post_save.connect(add_to_group, sender=User)
+#def add_to_group(sender, instance, created, **kwargs):
+#    from django.contrib.auth.models import Group
+#
+#    if created:
+#        try:
+#            group = Group.objects.get(name='Normal Users')
+#            instance.groups.add(group)
+#        except:
+#            pass 
+#post_save.connect(add_to_group, sender=User)

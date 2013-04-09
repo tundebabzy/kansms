@@ -23,11 +23,17 @@
   <![endif]-->
 
     </head>
-    <body>
-        <div class="row">
-            <div class="six columns centered">
+
+    <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+      <div id="body" class="row">
+        {% block body %}
+          <div class="content_title six columns">
+            {% block content_title %}{% endblock %}
+          </div>
+          <div class="content six columns">
             {% block content %}{% endblock %}
-            </div> <!-- six columns centered -->
-        </div> <!-- row -->
+          </div>
+        {% endblock %}
+      </div>
     </body>
 </html>
