@@ -46,13 +46,7 @@ def send_sms(text, to, fail_silently=False,user=None, connection=None):
 def send_bulk_sms(text, number_list, fail_silently=False, user=None,
                     connection=None, sent_by=None):
     """
-    This uses the backend to send multiple messages.
-    
-    `datatuple` should be in the form: (text, to)
-    eg datatuple::('What time is it? Call me', '0810').
 
-    This should be used for bulk messages. For just a single message,
-    use `send_sms`.
     """
 
     # before proceeding, lets make sure the user instance is authenticated
@@ -62,8 +56,6 @@ def send_bulk_sms(text, number_list, fail_silently=False, user=None,
     from backends.messaging import Message
     connection = _connection(fail_silently, connection)
     
-    # Check datatuple for messages supplied with acceptable destination
-    # numbers are queue *only* those for sending
     messages = []
     for m in number_list:
         messages.append(Message(text=text, to=m))
