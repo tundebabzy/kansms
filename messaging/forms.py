@@ -27,7 +27,7 @@ class BulkReceipientForm(forms.Form):
         or a new line(pressing the Enter key)')
 
 class FileUploadForm(forms.Form):
-    file_name = forms.FileField(label='Upload file containing your numbers. Must be in .CSV or .txt format',
+    file_name = forms.FileField(label='Upload file containing your numbers. Must be .txt format only',
                                 help_text='maximum size = 1MB')
 
 class MessageFormError(ErrorList):
