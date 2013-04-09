@@ -9,26 +9,15 @@ from messaging.sender import SmsBlaster
 from django.core.files.storage import FileSystemStorage
 
 class SendSmsWizard(SessionWizardView):
-    """    
-    Form wizard. It is made up of three forms;
-    
-    Form 1. Collect the message to be sent and if the user would like to
-            send the message to a single number, multiple numbers or
-            choose from his phone book.
-    Form 2. Form to collect single phone number
-    Form 3. Form to collect multiple phone numbers
-    Form 4. Form for user to select from stored contacts.
-
-    """
     template_name = 'dash.html'
     file_storage = FileSystemStorage()
     
-
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(SendSmsWizard, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, form, **kwargs):
+        """ Adds data to the default context """
         context = super(SendSmsWizard,self).get_context_data(form, **kwargs)
         user = self.request.user
         #user_balance = user.get_profile().get_balance()
@@ -38,12 +27,7 @@ class SendSmsWizard(SessionWizardView):
         return context
 
     def get_form_kwargs(self, step=None):
-        """
-        This is the method where arguments to be added to the form(s) to
-        be initialised can be set. The default implementation simply
-        returns an empty dictionary and is updated with arguments by the
-        get_form method.
-        """
+        """ updates the wizard's kwarg """
         if step == '4':
             return {'error_class': MessageFormError, 'owner':self.request.user}
         return {'error_class': MessageFormError}
@@ -97,36 +81,37 @@ class SendSmsWizard(SessionWizardView):
         }, context_instance=RequestContext(self.request))
 
 # Condition_dicts for Form Wizard
+def get_selected_method(wizard):
+    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+    return cleaned_data.get('method', False)
+
 def skip_if_single_receipient(wizard):
     """
-    Makes the wizard skip the second form if the user indicates in the
-    first form that the method for entering phone numbers is 'Single
-    Receipient'
+    Makes the wizard skip all other forms except SingleReceipientForm
     """
-    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
-    method = cleaned_data.get('method', False)
-    return method == 'SR'
+    return get_selected_method(wizard) == 'SR'
 
 def skip_if_bulk_receipient(wizard):
-    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
-    method = cleaned_data.get('method', False)
-    return method == 'BR'
+    """
+    Makes the wizard skip all other forms except BulkReceipientForm
+    """
+    return get_selected_method(wizard) == 'BR'
 
 def is_file_load(wizard):
-    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
-    method = cleaned_data.get('method', False)
-    return method == 'FU'
+    """
+    Makes the wizard skip all other forms except FileUploadForm
+    """
+    return get_selected_method(wizard) == 'FU'
     
 def initial_data_for_wizard(wizard):
     """
-    This tries to query the database for a Sms object and returns a
-    dictionary that will be used as the initial_dict for our SendSmsWizard
-    when loading a Sms object.
+    Takes an Sms object id which if exists in the database will be used
+    as initial data for form wizard MessageForm.
     """
     msg_id = wizard.kwargs.get('msg_id', None)
     if msg_id:
         try:
             message = Sms.objects.filter(pk=msg_id, sender=wizard.request.user).values_list('body', flat=True)[0]
-            return {'message': message }
         except:
-            return {'message': ''}
+            message = ''
+        return {'message': message}
