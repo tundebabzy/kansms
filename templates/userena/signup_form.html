@@ -1,5 +1,6 @@
 {% extends 'userena/base_userena.html' %}
 {% load i18n %}
+{% load url from future %}
 
 {% block title %}{% trans "Signup" %}{% endblock %}
 
@@ -24,6 +25,8 @@
     {% endif %}
     {% endfor %}
   </fieldset>
-  <input type="submit" value="{% trans "Signup"%}" />
+  <input type="submit" value="{% trans 'Signup' %}" />
+  <a href="{% url 'userena_signin' %}" title="{% trans 'Sign in' %}">{% trans "Already have an account?" %}</a> | 
+  <a href="{% url 'userena_password_reset' %}" title="{% trans 'Forgot your password?' %}">{% trans "Forgot your password?" %}</a>
 </form>
 {% endblock %}
