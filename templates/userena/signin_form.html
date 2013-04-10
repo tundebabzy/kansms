@@ -26,7 +26,10 @@
     {% endfor %}
   </fieldset>
   <input type="submit" value="{% trans "Signin" %}" />
-  <p class="forgot-password"><a href="{% url 'userena_password_reset' %}" title="{% trans 'Forgot your password?' %}">{% trans "Forgot your password?" %}</a></p>
+  <p class="forgot-password">
+      <a href="{% url 'userena_signup' %} title="Signup">Get an account.</a> | 
+      <a href="{% url 'userena_password_reset' %}" title="{% trans 'Forgot your password?' %}">{% trans "Forgot your password?" %}</a>
+  </p>
   {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
 </form>
 {% endblock %}
