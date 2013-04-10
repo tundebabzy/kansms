@@ -1,3 +1,5 @@
+{% load i18n %}
+{% load url from future %}
 <!DOCTYPE html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -25,6 +27,27 @@
     </head>
 
     <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+      {% block profile-nav %}
+        <div class="row">
+          <nav class="top-bar">
+              <ul>
+                  <li class="name"><h1><a href="{% url 'home' %}">O'Sheap SMS</a></h1></li> <!-- li.name -->
+                  <li class="toggle-topbar"><a href="#"></a></li> <!-- toggle-topbar -->
+              </ul>
+              <section>
+                  <ul>
+                    <li class="name"><a href="{% url 'userena_profile_detail' user.username %}"><span>{% trans 'View profile' %}</span></a></li>
+                    <li class="divider"></li>
+                    <li class="selected"><a href="{% url 'userena_profile_edit' user.username %}">{% trans "Edit profile" %}</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>
+                    <li class="divider"></li>
+                    <li class="last"><a href="{% url 'userena_email_change' user.username %}">{% trans "Change email" %}</a></li>
+                  </ul>
+              </section>
+          </nav>    <!-- nav-bar -->
+        </div>    <!-- row -->
+    {% endblock %}
       <div id="body" class="row">
         {% block body %}
           <div class="content_title six columns">
