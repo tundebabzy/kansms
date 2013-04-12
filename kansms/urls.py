@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('userena.urls')),
 
+    url(r'^help/$', HelpPageView.as_view(), name='help'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
