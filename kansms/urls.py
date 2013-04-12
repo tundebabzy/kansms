@@ -33,14 +33,14 @@ urlpatterns = patterns('',
        account_views.profile_edit,
        name='userena_profile_edit'),
 
-    ####POTENTIALLY CONFUSING #######
-    # this catches the url - /accounts/. In userena configuration, this
-    # will call a view to show all the profiles in the db. I don't want
-    # that so I will intercept it and make it the profile for the logged
-    # in individual
+    # These patterns will display the saved user profiles and that is a
+    # No NO so I will intercept and make return 404
+    url(r'^accounts/page/(?P<page>[0-9]+)/$',
+       account_views.not_allowed,
+       name='userena_profile_list_paginated'),
     url(r'^accounts/$',
-       userena_views.profile_detail,
-       name='userena_profile_detail'),
+       account_views.not_allowed,
+       name='userena_profile_list'),
 
     url(r'^accounts/', include('userena.urls')),
 

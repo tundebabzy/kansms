@@ -9,6 +9,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.http import Http404
 
 from guardian.decorators import permission_required_or_403
 
@@ -89,3 +90,5 @@ def profile_edit(request, username, edit_profile_form=forms.KansmsEditProfileFor
     return ExtraContextTemplateView.as_view(template_name=template_name,
                                             extra_context=extra_context)(request)
 
+def not_allowed(request):
+    raise Http404
