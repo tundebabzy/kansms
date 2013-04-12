@@ -2,7 +2,13 @@
 {% load i18n %}
 {% load url from future %}
 
+{% block google-font-css %}<link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>{% endblock %}
+
 {% block title %}{% trans "Signin" %}{% endblock %}
+
+{% block content_title %}
+<blockquote class="elite">{% trans "1. Pay us by SMS. No more rushing to the bank and texting teller numbers.<br />2. N1.50 per text<br />3. Get 10 SMS to test our platform.<br />4. Get rewards for loyalty" %}.</blockquote>
+{% endblock %}
 
 {% block content %}
 <form action="" method="post">

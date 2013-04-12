@@ -62,10 +62,10 @@
 
       <div id="body" class="row">
         {% block body %}
-          <div class="content_title five columns">
+          <div class="content_title six columns">
             {% block content_title %}{% endblock %}
           </div>    <!-- content_title five columns -->
-          <div class="content seven columns">
+          <div class="content six columns">
             {% block content %}{% endblock %}
           </div>    <!-- content seven columns -->
         {% endblock %}
@@ -90,6 +90,6 @@
       $(document).foundationTopBar();
     });
     </script>
-
+    {% block google-font-css %}{% endblock %}
     </body>
 </html>
