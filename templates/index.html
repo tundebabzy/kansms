@@ -50,9 +50,11 @@
                             <li class="has-dropdown">
                                 <a href="#">{{ user }}</a>
                                 <ul class="dropdown">
-                                    <li><a href="#" class="">Account settings</a></li>
+                                    <li><a href="{% url 'userena_profile_detail' user.username %}">View Profile</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="{% url 'logout-then-login' %}">Logout</a></li>
+                                    <li><a href="{% url 'userena_profile_edit' user.username %}">Edit Profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'userena_signout' %}">Sign out</a></li>
                                 </ul> <!-- dropdown -->
                             </li> <!-- has-dropdown -->
                         </ul>

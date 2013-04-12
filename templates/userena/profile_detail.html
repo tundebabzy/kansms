@@ -3,12 +3,9 @@
 {% load url from future %}
 
 {% block title %}{% blocktrans with profile.user.username as username %}{{ username }}'s profile.{% endblocktrans %}{% endblock %}
-{% block content_title %}<h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>{% endblock %}
 
-{% block content %}
-  <div class="white-box">
-    {% block profile_navigation %}
-      {% comment %}Dirty hack. Will use django-guardian in the future.{% endcomment %}
+{% block content_title %}
+<h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>
       {% if user.username == profile.user.username %}
         <ul id="box-nav">
           {% block profile_navigation_items %}
@@ -19,6 +16,12 @@
           {% endblock %}
         </ul>
       {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="white-box">
+    {% block profile_navigation %}
+      {% comment %}Dirty hack. Will use django-guardian in the future.{% endcomment %}
     {% endblock %}
 
     <div id="details">

@@ -27,20 +27,69 @@
     </head>
 
     <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
-      {% block profile-nav %}
-        <div class="row">
 
-        </div>    <!-- row -->
-    {% endblock %}
+{% block header-nav %}
+    <!-- Header and Nav -->
+        <div class="row">
+            <div class="twelve columns">
+                <nav class="top-bar">
+                    <ul>
+                        <li class="name"><h1><a href="{% url 'home' %}">O'Sheap SMS</a></h1></li> <!-- li.name -->
+                        <li class="toggle-topbar"><a href="#"></a></li> <!-- toggle-topbar -->
+                    </ul>
+                    {% if user.is_authenticated %}
+                    <section>
+                        <ul class="left">
+                            <li class="divider"></li>
+                            <li><a href="#">Credits Available: {{ credits }}</a></li>
+                            <li class="divider hide-for-small"></li>
+                        </ul>
+                        <ul class="right">
+                            <li class="divider show-for-medium-and-up"></li>
+                            <li><a href="#">Buy units</a></li>
+                            <li class="divider show-for-medium-and-up"></li>
+                            <li><a href="{% url 'help' %}">Help</a></li>
+                            <li class="divider show-for-medium-and-up"></li>
+                            <li><a href="{% url 'userena_signout' %}">Sign out</a></li>
+                        </ul>
+                    </section>
+                    {% endif %}
+                </nav> <!-- nav top-bar -->
+            </div> <!-- twelve columns -->
+        </div> <!-- row -->
+    <!-- End Header and Nav -->
+{% endblock %}
+
       <div id="body" class="row">
         {% block body %}
           <div class="content_title five columns">
             {% block content_title %}{% endblock %}
-          </div>
+          </div>    <!-- content_title five columns -->
           <div class="content seven columns">
             {% block content %}{% endblock %}
-          </div>
+          </div>    <!-- content seven columns -->
         {% endblock %}
       </div>
+
+        <!-- Footer -->
+        <footer class="row">
+            <div class="twelve columns">
+                <hr />
+                <div class="row">
+                    <div class="six columns">
+                        <p>&copy; Copyright O'Sheap SMS 2013</p>
+                    </div> <!-- six columns -->
+                </div> <!-- row -->
+            </div> <!-- twelve columns -->
+        </footer> <!-- footer row -->
+    <script src="{{ STATIC_URL }}foundation.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $(document).foundationCustomForms();
+      $(document).foundationNavigation();
+      $(document).foundationTopBar();
+    });
+    </script>
+
     </body>
 </html>

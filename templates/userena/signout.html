@@ -1,9 +1,14 @@
 {% extends 'userena/base_userena.html' %}
 {% load i18n %}
+{% load url from future %}
 
 {% block title %}{% trans "Signed out" %}{% endblock %}
-{% block content_title %}<h2>{% trans "You have been signed out" %}.</h2>{% endblock %}
+{% block content_title %}
+<h2>{% trans "You have been signed out" %}.</h2>
+<br />
+<a href="{% url 'userena_signin' %}" title="{% trans 'Sign in' %}">{% trans "Sign in" %}</a>
+{% endblock %}
 
 {% block content %}
-<p>{% trans "You have been signed out. Till we meet again." %}</p>
+<blockquote>{% trans "Hope you enjoyed our service. Please remember to use O'Sheap next time you need to send cheap SMS." %}<cite>Tunde</cite></blockquote>
 {% endblock %}
