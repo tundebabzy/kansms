@@ -27,14 +27,15 @@ urlpatterns = patterns('',
 
     url(r'^message/', include('messaging.urls')),
 
-    # These url pattern should be handled by userena but i'm gonna
+    # This url pattern should be handled by userena but i'm gonna
     # intercept it and link it to my slightly modified view
     url(r'^accounts/(?P<username>[\.\w-]+)/edit/$',
        account_views.profile_edit,
        name='userena_profile_edit'),
 
     # These patterns will display the saved user profiles and that is a
-    # No NO so I will intercept and make return 404
+    # No NO so I will intercept before getting to userena and make
+    # return 404
     url(r'^accounts/page/(?P<page>[0-9]+)/$',
        account_views.not_allowed,
        name='userena_profile_list_paginated'),
