@@ -46,6 +46,8 @@ class SendSmsWizard(SessionWizardView):
         return initial[step]
 
     def get_form_step_files(self, form):
+        """ Make sure uploaded files are in text/plain format """
+        # TODO: Better file format verification
         file_dict = form.files
         if file_dict:
             for key in file_dict:
@@ -61,12 +63,10 @@ class SendSmsWizard(SessionWizardView):
         sender_name = form_one_data['sender']
         
         files = form_two_data.get('file_name', None)
-        if files.content_type == 'text/plain':
+        if files and files.content_type == 'text/plain':
             file_data = []
             for chunk in files.chunks():
                 file_data.extend(chunk.strip().split('\n'))
-        else:
-            raise
         
         to = form_two_data.get('single_receipient',None) or form_two_data.get('bulk_receipient', None) or file_data
 
