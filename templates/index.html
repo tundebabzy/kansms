@@ -38,7 +38,7 @@
                     <section>
                         <ul class="left">
                             <li class="divider"></li>
-                            <li><a href="#">Credits Available: {{ credits }}</a></li>
+                            <li><a href="{% url 'userena_profile_detail' user.username %}">Credits Available: {{ credits }}</a></li>
                             <li class="divider hide-for-small"></li>
                         </ul>
                         <ul class="right">

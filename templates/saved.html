@@ -6,92 +6,93 @@
                             <input type="submit" class="button" value="Delete Selected Messages" />
                         </div> <!-- row -->
 
-                    <ul class="pagination show-for-large-up">
-                        {% for page in page_obj.paginator.page_range %}
-                        {% if forloop.first %}
-                            {% if not page_obj.has_previous %}
-                        <li class="arrow unavailable">&laquo;</li>
-                            {% else  %}
-                        <li class="arrow"><a href="?page={{ page }}">&laquo;</a></li>
+                        <ul class="pagination show-for-large-up">
+                            {% for page in page_obj.paginator.page_range %}
+                            {% if forloop.first %}
+                                {% if not page_obj.has_previous %}
+                            <li class="arrow unavailable">&laquo;</li>
+                                {% else  %}
+                            <li class="arrow"><a href="?page={{ page }}">&laquo;</a></li>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
 
-                        {% if forloop.counter == page_obj.number %}
-                        <li class="current">{{ page }}</li>
-                        {% else %}
-                        <li><a href="?page={{ page }}">{{ page }}</a></li>
-                        {% endif %}
-                        
-                        {% if forloop.last %}
-                            {% if not page_obj.has_next %}
-                        <li class="arrow unavailable">&raquo;</li>
+                            {% if forloop.counter == page_obj.number %}
+                            <li class="current">{{ page }}</li>
                             {% else %}
-                        <li class="arrow"><a href="?page={{ page }}">&raquo;</a></li>
+                            <li><a href="?page={{ page }}">{{ page }}</a></li>
                             {% endif %}
-                        {% endif %}
-                        {% endfor %}
-                    </ul> <!-- ul paginator -->
+                            
+                            {% if forloop.last %}
+                                {% if not page_obj.has_next %}
+                            <li class="arrow unavailable">&raquo;</li>
+                                {% else %}
+                            <li class="arrow"><a href="?page={{ page }}">&raquo;</a></li>
+                                {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </ul> <!-- ul paginator -->
                     
                         <div class="row hide-for-small">
-                            <div class="ten columns">
-                                <label>
-                                    <input type="checkbox" id="checkbox">
-                                    <span class="checkbox"></span>
-                                    <strong>Message</strong>
-                                </label>
-                            </div> <!-- ten columns -->
-                            <div class="two columns">
-                                <p><strong>Time</strong></p>
-                            </div> <!-- two columns -->
-                            <hr />
+                            <div class="twelve columns bottombor">
+                                <div class="ten columns">
+                                    <label>
+                                        <input type="checkbox" id="checkbox">
+                                        <strong>Message</strong>
+                                    </label>
+                                </div> <!-- ten columns -->
+                                <div class="two columns">
+                                    <p><strong>Time</strong></p>
+                                </div> <!-- two columns -->
+                            </div>  <!-- ten columns -->
                         </div> <!-- row hide-for-small -->
                     {% if page_obj %}
                     {% for object in page_obj %}
                         <div class="row">
-                            <div class="ten columns">
-                                <label for="checkbox{{ forloop.counter }}">
-                                    <input name="selected" value="{{ object.pk }}" type="checkbox" id="checkbox{{ forloop.counter }}">
-                                    <strong>{{ object }}</strong>
-                                </label>
-                                <ul class="inline-list">
-                                    <li><a href="{% url 'send_to_others' object.pk %}">Forward</a></li>
-                                    <li><a href="{% url 'resend' object.pk %}">Resend</a></li>
-                                    <li><a href="#">Time</a></li>
-                                    <li><a href="{% url 'receipients' object.pk %}?page={{ page }}">View Receipients</a></li>
-                                </ul>
-                            </div> <!-- ten columns -->
-                            <div class="two columns">
-                                <p>{{ object.created }}</p>
-                            </div>
-                            <hr/>
+                            <div class="twelve columns bottombor">
+                                <div class="ten columns">
+                                    <label for="checkbox{{ forloop.counter }}">
+                                        <input name="selected" value="{{ object.pk }}" type="checkbox" id="checkbox{{ forloop.counter }}">
+                                        <strong>{{ object }}</strong>
+                                    </label>
+                                    <ul class="inline-list">
+                                        <li><a href="{% url 'send_to_others' object.pk %}">Forward</a></li>
+                                        <li><a href="{% url 'resend' object.pk %}">Resend</a></li>
+                                        <li><a href="#">Time</a></li>
+                                        <li><a href="{% url 'receipients' object.pk %}?page={{ page }}">View Receipients</a></li>
+                                    </ul>
+                                </div>  <!-- ten columns -->
+                                <div class="two columns">
+                                    <p>{{ object.created }}</p>
+                                </div> <!-- two columns -->
+                            </div> <!-- twelve columns -->
                         </div> <!-- row -->
                     {% endfor %}
 
-                    <ul class="pagination">
-                        {% for page in page_obj.paginator.page_range %}
-                        {% if forloop.first %}
-                            {% if not page_obj.has_previous %}
-                        <li class="arrow unavailable">&laquo;</li>
-                            {% else  %}
-                        <li class="arrow"><a href="?page={{ page }}">&laquo;</a></li>
+                        <ul class="pagination">
+                            {% for page in page_obj.paginator.page_range %}
+                            {% if forloop.first %}
+                                {% if not page_obj.has_previous %}
+                            <li class="arrow unavailable">&laquo;</li>
+                                {% else  %}
+                            <li class="arrow"><a href="?page={{ page }}">&laquo;</a></li>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
 
-                        {% if forloop.counter == page_obj.number %}
-                        <li class="current">{{ page }}</li>
-                        {% else %}
-                        <li><a href="?page={{ page }}">{{ page }}</a></li>
-                        {% endif %}
-                        
-                        {% if forloop.last %}
-                            {% if not page_obj.has_next %}
-                        <li class="arrow unavailable">&raquo;</li>
+                            {% if forloop.counter == page_obj.number %}
+                            <li class="current">{{ page }}</li>
                             {% else %}
-                        <li class="arrow"><a href="?page={{ page }}">&raquo;</a></li>
+                            <li><a href="?page={{ page }}">{{ page }}</a></li>
                             {% endif %}
-                        {% endif %}
-                        {% endfor %}
-                    </ul> <!-- ul paginator -->
+                            
+                            {% if forloop.last %}
+                                {% if not page_obj.has_next %}
+                            <li class="arrow unavailable">&raquo;</li>
+                                {% else %}
+                            <li class="arrow"><a href="?page={{ page }}">&raquo;</a></li>
+                                {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </ul> <!-- ul paginator -->
 
                         <div class="row">
                             <input type="submit" class="button" value="Delete Selected Messages" />

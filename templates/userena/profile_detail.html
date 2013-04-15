@@ -53,6 +53,8 @@
               <dt>{% trans "About me" %}</dt>
               <dd>{{ profile.about_me }}</dd>
             {% endif %}
+            <dt>{% trans "Available SMS" %}</dt>
+            <dd>{{ profile.credit }} SMS available</dd>
           {% endblock %}
         </dl>
       {% endblock %}
