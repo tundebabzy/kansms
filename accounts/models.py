@@ -54,4 +54,4 @@ class UserProfile(UserenaBaseProfile):
             self.credit = self.credit - value
         return self.credit
 
-User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u, defaults={'credit':0})[0])
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u, defaults={'credit':10})[0])
