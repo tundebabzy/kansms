@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 
 from userena.models import UserenaBaseProfile
 
-# Create your models here.
+def is_positive(value):
+    """ Just checks to see that `value` is a positive number """
+    return value >= 0
+    
 class UserProfile(UserenaBaseProfile):
     """    """    
     user = models.OneToOneField(User, unique=True)

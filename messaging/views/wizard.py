@@ -20,8 +20,7 @@ class SendSmsWizard(SessionWizardView):
         """ Adds data to the default context """
         context = super(SendSmsWizard,self).get_context_data(form, **kwargs)
         user = self.request.user
-        #user_balance = user.get_profile().get_balance()
-        user_balance = '100'    # This line is temporary
+        user_balance = user.get_profile().get_balance()
             
         context.update({'user':user, 'credits':user_balance})
         return context
@@ -70,7 +69,7 @@ class SendSmsWizard(SessionWizardView):
         
         to = form_two_data.get('single_receipient',None) or form_two_data.get('bulk_receipient', None) or file_data
 
-        sms_pack = SmsBlaster(text=text, numbers=to, user=self.request.user, sent_by=sender_name)
+        sms_pack = SmsBlaster(text=text, numbers=to, user_profile=self.request.user.get_profile(), sent_by=sender_name)
         sms_pack_data = sms_pack.blast()
                                 
         return render_to_response('done.html', {

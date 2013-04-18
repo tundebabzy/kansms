@@ -47,7 +47,7 @@ class RoutesmsSmsSender(SmsSender):
         the url containing all the needed parameters and open the site
         """
         self.delivery_list = []
-        source = sent_by
+        source = urllib.quote(sent_by[:11]) #RouteSMS doesnt allow more than 11 chars
         
         for i in xrange(len(message_instance_list)):
             message = message_instance_list[i]
@@ -63,33 +63,23 @@ class RoutesmsSmsSender(SmsSender):
         destination = urllib.quote(destination)
 
         # Sorry for the next very loong line....I just have to else there'll be errors
-        request = urllib2.Request('http://%s:%s/bulksms/bulksms?username=%s&password=%s&type=%s&dlr=%s&destination=%s&source=%s&message=%s' %(self.server, self.port, self.un, self.pw, self.msg_type, self.dlr, destination, source, self.text),
-                                    headers={'Content-Type':'application/xml', 'Cache-Control':'no-cache',
-                                  'Pragma':'no-cache'}
-                    )
-
+        request = urllib2.Request('http://%s:%s/bulksms/bulksms?username=%s&password=%s&type=%s&dlr=%s&destination=%s&source=%s&message=%s' %(self.server, self.port, self.un, self.pw, self.msg_type, self.dlr, destination, source, self.text))
+        
         try:
             res = urllib2.urlopen(request).read()
             status = self.analyse_response(res)
             return status
             
-        except urllib2.HTTPError as e:
-            #print 'HTTPError'
-            #print e.code
-            pass 
+        except (urllib2.HTTPError, urllib2.URLError) as e:
+            code = e.code
+            reason = e.reason
 
-        except urllib2.URLError as e:
-            #print 'URLError'
-            #print e.reason
-            pass 
-
-        except IOError:
-            pass 
+        except IOError as (errno, strerror):
+            io_err = "I/O error({0}): {1}".format(errno, strerror) # Honestly, I don't know what this line does
+            #pass 
             
         except Exception as e:
-            #print 'other error'
-            #print e
-            pass
+            err = e
 
         return [('','')]
             

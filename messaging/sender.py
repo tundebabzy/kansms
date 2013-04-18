@@ -1,6 +1,16 @@
 from backends.api import send_bulk_sms
 from messaging.models import Sms, List, Contact
 
+ROUTE_SMS_STATUS = {
+                    '1701': 'Success', '1702': 'Invalid URL',
+                    '1703': 'Invalid value in username or password field',
+                    '1704': 'Invalid type', '1705': 'Invalid message',
+                    '1706': 'Invalid Destination',
+                    '1707': 'Invalid sender', '1708': 'Invalid dlr value',
+                    '1709': 'User validation failed',
+                    '1710': 'Internal Error', '1025': 'Insufficient credit'
+}
+
 class SmsBlaster(object):
     """
     Does the work of piecing together information of the sms to be sent,
@@ -8,10 +18,10 @@ class SmsBlaster(object):
     and returns a list of tuples where each tuple contains a status code
     and the destination number for which the code relates.
     """
-    def __init__(self, text, numbers=None, user=None, sms_class=Sms, sent_by=None):
+    def __init__(self, text, numbers=None, user_profile=None, sms_class=Sms, sent_by=None):
         self.text = text
         self.numbers = numbers
-        self.user = user
+        self.user_profile = user_profile
         self.sms_class = sms_class
         self.sms_instance = None
         self.sent_by = sent_by
@@ -19,6 +29,10 @@ class SmsBlaster(object):
         self.successful = []
         self.failed = []
         self.send_list = []
+
+    def is_ok(self, res):
+        if res in ROUTE_SMS_STATUS:
+            return ROUTE_SMS_STATUS[res] == ROUTE_SMS_STATUS['1701']
 
     def process(self):
         """
@@ -28,23 +42,31 @@ class SmsBlaster(object):
             to = [self.numbers]
         else:
             to = self.numbers
-        response = send_bulk_sms(self.text, number_list=to, user=self.user, sent_by=self.sent_by) # [(0,2348058068419)]
+        response = send_bulk_sms(self.text, number_list=to, user_profile=self.user_profile, sent_by=self.sent_by) # [(0,2348058068419)]
         self.analyse(response)
 
     def analyse(self,response):
         """
         parses the response and stores the successful and unsuccessful
-        sms
+        sms.
+        reponse is in this format [('1701','2348088080088')]
         """
-        msg = self.create_or_get_sms_instance()
-        
-        for res in response:
-            if res[0] == '0' or res[0] == 0 or res[0] == '1701' or res[0] == 1701:
-                self.successful.append(str(res[1]))
-            else:
-                self.failed.append(str(res[1]))
+        if response == 0:   # Please work on this. Its possibly redundant
+            if isinstance(self.numbers, basestring):
+                self.failed.append(unicode(self.numbers))
+            elif isinstance(self.numbers, list):
+                self.failed.extend(self.numbers)
                 
-            self.send_list.append(List(message=msg, number= res[1]))
+        else:
+            msg = self.create_or_get_sms_instance()
+            
+            for res in response:
+                if self.is_ok(res[0]):
+                    self.successful.append(unicode(res[1]))
+                else:
+                    self.failed.append(unicode(res[1]))
+                    
+                self.send_list.append(List(message=msg, number= res[1]))
                 
     @property
     def information(self):
@@ -56,10 +78,13 @@ class SmsBlaster(object):
 
     def create_or_get_sms_instance(self):
         if not self.sms_instance:
-            self.sms_instance = self.sms_class.objects.create(sender=self.user, body=self.text, sender_alias=self.sent_by)
+            self.sms_instance = self.sms_class.objects.create(sender=self.user_profile.user, body=self.text, sender_alias=self.sent_by)
         return self.sms_instance
 
     def create_contacts_and_list(self):
+        if not self.send_list:
+            return
+
         # make the List
         List.objects.bulk_create(self.send_list)
 
@@ -81,7 +106,13 @@ class SmsBlaster(object):
 
         Contact.objects.bulk_create(to_save_list)
 
+    def adjust_credit(self):
+        number = len(self.successful)
+        self.user_profile.deduct_credit(number)
+        self.user_profile.save()
+
     def blast(self):
         self.process()
         self.create_contacts_and_list()
+        self.adjust_credit()
         return self.information

@@ -71,11 +71,11 @@
             <div class="ten columns push-two">
             {% block main-content %}
             {% endblock %}
-            </div> <!-- nine columns push-three -->
+            </div> <!-- ten columns push-two -->
 
         <!-- Nav Sidebar -->
         <!-- This is source ordered to be pulled to the left on larger screens -->
-            <div class="two columns pull-ten">
+            <div class="two columns pull-ten panel">
             {% block nav-bar-vertical %}
                 <ul class="side-nav">
                     <li><a href="{% url 'home' %}">New Message</a></li>
@@ -83,7 +83,7 @@
                     <li><a href="{% url 'all_sent' %}">Sent Messages</a></li>
                 </ul>
             {% endblock %}
-            </div> <!-- three columns pull-nine -->
+            </div> <!-- two columns pull-ten -->
         </div> <!-- row -->
 
         <!-- Footer -->

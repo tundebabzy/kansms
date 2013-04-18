@@ -6,10 +6,6 @@ from messaging.exceptions import InvalidTransaction, NumberTooBig
 from string import capwords
 
 MAXIMUM_VALUE = 1000000
-
-def is_positive(value):
-    """ Just checks to see that `value` is a positive number """
-    return value >= 0
     
 class List(models.Model):
     message = models.ForeignKey('Sms', related_name='sms_id')

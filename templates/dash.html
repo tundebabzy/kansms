@@ -1,11 +1,13 @@
 {% extends 'index.html' %}
 {% load url from future %}
-            {% block main-content %}    
+            {% block main-content %}
                 <div>
                 {% with form_wizard=wizard.form  wizard_steps=wizard.steps management_form=wizard.management_form step1=wizard.steps.step1 prev=wizard.steps.prev %}
                     {% if credits == 0 %}
                     <p>You have exhausted all your credits. <a href="#">Buy more.</a></p>
                     {% else %}
+                    <div class="panel">Note: You can only send {{ credits }} SMS. If you supply more that {{ credits }} numbers, only the first {{ credits }} numbers will be sent. The rest will be ignored.
+                    One SMS is 160 characters.</div>
                     {{ form_wizard.form.media }}
                     <p><span class="round label">Step {{ step1 }}</span></p>
                     <form action="" {% if step1 == 1 %}class="custom" {% elif step1 == 2 %}enctype="multipart/form-data"{% endif %} method="post">{% csrf_token %}

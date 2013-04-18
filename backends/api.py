@@ -43,14 +43,11 @@ def send_sms(text, to, fail_silently=False,user=None, connection=None):
         message = Message(text=text, to=to)
         return connection.send_messages(message)
 
-def send_bulk_sms(text, number_list, fail_silently=False, user=None,
+def send_bulk_sms(text, number_list, fail_silently=False, user_profile=None,
                     connection=None, sent_by=None):
-    """
-
-    """
 
     # before proceeding, lets make sure the user instance is authenticated
-    if not user or not user.is_authenticated():
+    if not user_profile or not user_profile.user.is_authenticated():
         raise
         
     from backends.messaging import Message
@@ -59,6 +56,10 @@ def send_bulk_sms(text, number_list, fail_silently=False, user=None,
     messages = []
     for m in number_list:
         messages.append(Message(text=text, to=m))
+
+    credits_available = user_profile.get_balance()
+    if credits_available < len(messages):
+        messages = messages[:credits_available]
 
     # If for any reason theres an empty sender argument then bail
     if not sent_by:

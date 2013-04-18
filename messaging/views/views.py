@@ -90,7 +90,7 @@ class VerifyView(OrdinaryView):
             message = Sms.objects.filter(pk=msg_id).values_list('body', 'sender_alias')
             if not message:
                 return self.get(request, *args, **kwargs)
-            sms_pack = SmsBlaster(text=message[0][0], numbers=selected, user=self.request.user, sent_by=message[0][1])
+            sms_pack = SmsBlaster(text=message[0][0], numbers=selected, user_profile=self.request.user.get_profile(), sent_by=message[0][1])
             sms_pack_data = sms_pack.blast()
 
             data = {'num_sent': sms_pack_data['successful'] + sms_pack_data['failed'],

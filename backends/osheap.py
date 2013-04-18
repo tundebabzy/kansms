@@ -5,7 +5,7 @@ O'sheap backend.
 from base import BaseBackend
 from messaging import Message
 from django.conf import settings
-from kannel.kannel import InfobipSmsSender as SmsSender
+from kannel.kannel import RoutesmsSmsSender as SmsSender
 
 USERNAME = getattr(settings, 'SMS_GATEWAY_USERNAME', '')
 #USERNAME = 'citrusSMS'
