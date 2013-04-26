@@ -103,6 +103,14 @@
       $(document).foundationCustomForms();
       $(document).foundationNavigation();
       $(document).foundationTopBar();
+
+    $('#id_0-message').keyup(function() {
+        var num_typed = $(this).val().length;
+        var remaining = 160 - num_typed;
+        $('#characters').text(remaining);
+    });
+
+      
     });
     </script>
     </body>

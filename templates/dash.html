@@ -6,14 +6,18 @@
                     {% if credits == 0 %}
                     <p>You have exhausted all your credits. <a href="#">Buy more.</a></p>
                     {% else %}
+                        {% if step1 != 1 %}
                     <div class="panel">Note: You can only send {{ credits }} SMS. If you supply more that {{ credits }} numbers, only the first {{ credits }} numbers will be sent. The rest will be ignored.
                     One SMS is 160 characters.</div>
+                        {% endif %}
                     {{ form_wizard.form.media }}
                     <p><span class="round label">Step {{ step1 }}</span></p>
                     <form action="" {% if step1 == 1 %}class="custom" {% elif step1 == 2 %}enctype="multipart/form-data"{% endif %} method="post">{% csrf_token %}
                     {{ management_form }}
                     {% if step1 == 1 %}
                         <fieldset>
+                            <p class="right"><span class="round label" id="characters">160</span>characters remaining</p>
+                            <p class="clear"></p>
                             <legend>Prepare SMS</legend>
                         {{ form_wizard.non_field_errors }}
                         {{ form_wizard.sender.errors }}
